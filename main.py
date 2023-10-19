@@ -72,7 +72,7 @@ def train(model, train_data, error_func, lr):
 
 
 torch.manual_seed(2052)
-train_data = dataset.MNIST(
+train_data = datasets.MNIST(
 	"./data/",
 	train=True,
 	download=True,
