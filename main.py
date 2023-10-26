@@ -72,25 +72,24 @@ def train(model, train_data, error_func, lr):
 
 
 torch.manual_seed(2052)
-train_data = datasets.MNIST(
+transforms = transforms.Compose([
+	transforms.ToTensor(),
+	transforms.Normalize((0.1307,), (0.3081,))
+])
+train_dataset = datasets.MNIST(
 	"./data/",
 	train=True,
 	download=True,
-	transform = transforms.Compose([
-		transforms.ToTensor(),
-		transforms.Normalize((0.1307,), (0.3081,))
-	])
+	transform=transforms
 )
-train_loader = train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=64, shuffle=True)
-
-test_data = datasets.MNIST(
-	'./data/',
+test_dataset = datasets.MNIST(
+	"./data/",
 	train=False,
-	transform=transforms.Compose([
-    	transforms.ToTensor(),
-    	transforms.Normalize((0.1307,), (0.3081,))
-	])
+	download=True,
+	transform=transforms
 )
-test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=64, shuffle=False)
+
+print(len(train_dataset))
+print(len(test_dataset))
 
 model = CNN()
