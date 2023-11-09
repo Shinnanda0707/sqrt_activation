@@ -92,7 +92,7 @@ def train(model, train_data, loss_func, optimizer):
 		total += y_hat.size(0)
 		train_acc += (prediction == y_hat).sum().item()
 
-	train_loss /= len(train_loader)
+	train_loss /= len(train_data)
 	train_acc /= total
 
 	return model, train_loss, train_acc
@@ -117,6 +117,11 @@ def val(model, val_data, loss_func, optimizer):
 			val_loss += loss.item()
 			val_acc += (prediction == y_hat).sum().item()
 
+	val_loss /= len(val_data)
+	val_acc /= total
+	
+	return val_loss, val_acc
+
 
 parser = ArgumentParser()
 parser.add_argument("-bs", "--batch_size", dest="bs", default=128)
@@ -124,6 +129,7 @@ parser.add_argument("-nw", "--num_workers", dest="num_workers", default=3)
 parser.add_argument("--ms", "--manual_seed", dest="seed", default=123)
 parser.add_argument("-clr", "--cnn_learning_rate", dest="clr", default=1e-3)
 parser.add_argument("-slr", "--sqrt_cnn_learning_rate", dest="slr", default=1e-3)
+parser.add_argument("-e", "--epoch", dest="--epoch", default=1000)
 args = parser.parse_args()
 
 torch.manual_seed(2052)
@@ -157,3 +163,12 @@ cnn_optim = optim.SGD(cnn.parameters(), lr=args.clr)
 sqrt = SqrtCNN()
 sqrt_optim = optim.SGD(sqrt.parameters(), lr=args.slr)
 loss = nn.CrossEntropyLoss()
+
+def train(model, train_data, loss_func, optimizer):
+for i in range(args.epoch):
+	print(f"epoch: {i + 1} / {args.epoch}")
+	train(CNN, train_loader, loss, cnn_optim)
+	train(SqrtCNN, train_loader, loss, sqrt_optim)
+	if i % 10 == 0:
+		val(CNN, train_loader, loss)
+		val(SqrtCNN, train_loader, loss)
