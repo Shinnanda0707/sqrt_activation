@@ -164,11 +164,10 @@ sqrt = SqrtCNN()
 sqrt_optim = optim.SGD(sqrt.parameters(), lr=args.slr)
 loss = nn.CrossEntropyLoss()
 
-def train(model, train_data, loss_func, optimizer):
 for i in range(args.epoch):
 	print(f"epoch: {i + 1} / {args.epoch}")
-	train(CNN, train_loader, loss, cnn_optim)
-	train(SqrtCNN, train_loader, loss, sqrt_optim)
+	cnn, train_cnn_loss, train_val_acc = train(CNN, train_loader, loss, cnn_optim)
+	sqrt, train_sqrt_loss, train_sqrt_acc = train(SqrtCNN, train_loader, loss, sqrt_optim)
 	if i % 10 == 0:
 		val(CNN, train_loader, loss)
 		val(SqrtCNN, train_loader, loss)
