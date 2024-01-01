@@ -100,7 +100,7 @@ test_loader = DataLoader(
 
 model = CNN()
 model.cuda()
-# model.load_state_dict(torch.load("/home/pie/Desktop/Python/AI/SQRT_activation/CNN_init.pth"))
+model.load_state_dict(torch.load("/home/pie/Desktop/Python/AI/SQRT_activation/CNN_init.pth"))
 optimizer = optim.SGD(model.parameters(), lr=args.learning_rate)
 loss = nn.CrossEntropyLoss()
 
